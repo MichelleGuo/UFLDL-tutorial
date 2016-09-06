@@ -56,25 +56,12 @@ cost = -sum(values);
 %% compute gradients using backpropagation
 %%% YOUR CODE HERE %%%
 % cross entropy gradient
-d = zeros(size(pred_prob);
-d(I) = 1;
-error = pred_prob - d;
+d = full(sparse(labels,1:size(c,2),1))
 
-% gradient, error BP
-% for i = nBegin:nStep:nEnd; nStep default = 1
-for j = numHidden+1 : -1 : 1
-    gradStack{j}.b = sum(error,2);
-    if j==1
-        gradStack{j}.W=error*data';
-    end
-    error = (stack{1}.W)'*error.*hAct{j-1}.*(1-hAct{j-1});
-    % activation derivatives
-end
+
 
 %% compute weight penalty cost and gradient for non-bias terms
 %%% YOUR CODE HERE %%%
-
-wCost
 
 %% reshape gradients into vector
 [grad] = stack2params(gradStack);
