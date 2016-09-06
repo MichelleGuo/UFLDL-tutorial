@@ -25,7 +25,7 @@ for i = 1:numHidden
         z = stack{i}.W * data + hAct{i-1};
     end
     z = bsxfun(@plus,z,stack{i}.b);
-    hAct{i}=sigmoid(z);
+    hAct{i}=sigmf(z,[1,0]);
 end
 
 % softmax layer feature
@@ -45,36 +45,50 @@ end;
 %% compute cost
 %%% YOUR CODE HERE %%%
 % softmax layer cost
-cost = 0;
+ceCost = 0;
 c = log(pred_prob);
 I=sub2ind(size(c),labels',1:size(c,2));
 % find out matrix c' index, rows are depended on labels, columns are set by
 % size(c,2)
 values = c(I);
-cost = -sum(values);
+ceCost = -sum(values);
 
 %% compute gradients using backpropagation
 %%% YOUR CODE HERE %%%
 % cross entropy gradient
-d = zeros(size(pred_prob);
+d = zeros(size(pred_prob));  
 d(I) = 1;
 error = pred_prob - d;
 
 % gradient, error BP
 % for i = nBegin:nStep:nEnd; nStep default = 1
+% TODO: Review
 for j = numHidden+1 : -1 : 1
     gradStack{j}.b = sum(error,2);
-    if j==1
+    if (j==1)
         gradStack{j}.W=error*data';
+        break;
+    else
+        gradStack{j}.W = error*hAct{j-1}';
     end
-    error = (stack{1}.W)'*error.*hAct{j-1}.*(1-hAct{j-1});
+    error = (stack{j}.W)'*error .*hAct{j-1}.* (1-hAct{j-1});
     % activation derivatives
 end
 
 %% compute weight penalty cost and gradient for non-bias terms
 %%% YOUR CODE HERE %%%
 
-wCost
+wCost = 0;  
+for l = 1:numHidden+1  
+    wCost = wCost + .5 * ei.lambda * sum(stack{l}.W(:) .^ 2); 
+end  
+  
+cost = ceCost + wCost;  
+  
+% Computing the gradient of the weight decay.  
+for l = numHidden : -1 : 1  
+    gradStack{l}.W = gradStack{l}.W + ei.lambda * stack{l}.W;
+end  
 
 %% reshape gradients into vector
 [grad] = stack2params(gradStack);
