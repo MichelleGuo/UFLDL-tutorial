@@ -48,6 +48,7 @@ end;
 ceCost = 0;
 c = log(pred_prob);
 I=sub2ind(size(c),labels',1:size(c,2));
+% labels:60000*1; size(c):10*60000;
 % find out matrix c' index, rows are depended on labels, columns are set by
 % size(c,2)
 values = c(I);
@@ -80,7 +81,7 @@ end
 
 wCost = 0;  
 for l = 1:numHidden+1  
-    wCost = wCost + .5 * ei.lambda * sum(stack{l}.W(:) .^ 2); 
+    wCost = wCost + 0.5 * ei.lambda * sum(stack{l}.W(:) .^ 2); 
 end  
   
 cost = ceCost + wCost;  
