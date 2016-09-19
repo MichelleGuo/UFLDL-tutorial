@@ -95,7 +95,7 @@ z = bsxfun(@plus,z,bd);
 z = bsxfun(@minus,z,max(z,[],1));
 z = exp(z);
 probs = bsxfun(@rdivide,z,sum(z,1));
-preds = probs;
+preds = probsl
 
 
 %%======================================================================
@@ -110,15 +110,6 @@ cost = 0; % save objective into cost
 logProbs = log(probs);
 labelIndex = sub2ind(size(logProbs),labels',1:size(logProbs,2));
 
-values = logProbs(labelIndex);
-cost = -sum(values);
-weightDecayCost = (weightDecay/2)*(sum(Wd(:).^2)+sum(Wc(:).^2));
-cost = cost/numImages+weightDecayCost;
-
-%Make sure to scale your gradients by the inverse size of the training set   
-%if you included this scale in the cost calculation otherwise your code will 
-%   not pass the numerical gradient check.  
- 
 
 
 % Makes predictions given probs and returns without backproagating errors.
@@ -141,9 +132,6 @@ end;
 
 %%% YOUR CODE HERE %%%
 
-
-
-
 %%======================================================================
 %% STEP 1d: Gradient Calculation
 %  After backpropagating the errors above, we can use them to calculate the
@@ -153,9 +141,6 @@ end;
 %  for that filter with each image and aggregate over images.
 
 %%% YOUR CODE HERE %%%
-
-
-
 
 %% Unroll gradient into grad vector for minFunc
 grad = [Wc_grad(:) ; Wd_grad(:) ; bc_grad(:) ; bd_grad(:)];
